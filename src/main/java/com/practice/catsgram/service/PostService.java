@@ -53,7 +53,21 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(String.format("Пост № %d не найден", postId)));
     }
 
+    public List<Post> findAllByUserEmail(String email, Integer size, String sort) {
+        return posts.stream()
+                .filter(post -> email.equals(post.getAuthor()))
+                .sorted((p0, p1) -> {
+                    int comparison = p0.getCreationDate().compareTo(p1.getCreationDate()); // прямой порядок сортировки
+                    if ("desc".equals(sort)) { // обратный порядок сортировки
+                        comparison *= -1;
+                    }
+                    return comparison;
+                })
+                .limit(size)
+                .collect(Collectors.toList());
+    }
+
     private static Integer getNextId() {
-        return globalId++;
+        return ++globalId;
     }
 }
