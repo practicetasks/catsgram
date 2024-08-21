@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,18 @@ public class PostService {
 
     private static Integer globalId = 0;
 
-    public List<Post> findAll() {
-        return posts;
+    public List<Post> findAll(Integer size, Integer from, String sort) {
+        return posts.stream()
+                .sorted((p0, p1) -> {
+                    int comparison = p0.getCreationDate().compareTo(p1.getCreationDate());  // прямой порядок сортировки
+                    if ("desc".equals(sort)) {  // обратный порядок сортировки
+                        comparison *= -1;
+                    }
+                    return comparison;
+                })
+                .skip(from)
+                .limit(size)
+                .collect(Collectors.toList());
     }
 
     public Post create(Post post) {
