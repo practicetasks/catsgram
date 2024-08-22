@@ -17,7 +17,7 @@ values ('tom', 'Thomas C. Andersun', 'neoc@t'),
 
 create table cat_post
 (
-    id            serial8 primary key,
+    id            serial primary key,
     author_id     varchar(64) references cat_user (id) not null,
     description   varchar(500),
     photo_url     varchar(1000),
