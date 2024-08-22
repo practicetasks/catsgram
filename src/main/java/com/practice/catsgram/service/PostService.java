@@ -3,7 +3,6 @@ package com.practice.catsgram.service;
 import com.practice.catsgram.exceptions.PostNotFoundException;
 import com.practice.catsgram.exceptions.UserNotFoundException;
 import com.practice.catsgram.model.Post;
-import com.practice.catsgram.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +33,10 @@ public class PostService {
     }
 
     public Post create(Post post) {
-        User postAuthor = userService.findUserByEmail(post.getAuthor());
-        if (postAuthor == null) {
-            throw new UserNotFoundException(String.format(
-                    "Пользователь %s не найден",
-                    post.getAuthor()));
-        }
+        userService.findUserById(post.getAuthor())
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format("Пользователь %s не найден", post.getAuthor()))
+                );
 
         post.setId(getNextId());
         posts.add(post);
