@@ -18,12 +18,18 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findUserById(String id) {
+        // выполняем запрос к базе данных.
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from cat_user where id = ?", id);
+
+        // обрабатываем результат выполнения запроса
         if (userRows.next()) {
-            log.info("Найден пользователь: {} {}", userRows.getString("id"), userRows.getString("nickname"));
-            // вы заполните данные пользователя чуть позже
-            User user = new User();
-            user.setId(id);
+            User user = new User(
+                    userRows.getString("id"),
+                    userRows.getString("username"),
+                    userRows.getString("nickname"));
+
+            log.info("Найден пользователь: {} {}", user.getId(), user.getNickname());
+
             return Optional.of(user);
         } else {
             log.info("Пользователь с идентификатором {} не найден.", id);
