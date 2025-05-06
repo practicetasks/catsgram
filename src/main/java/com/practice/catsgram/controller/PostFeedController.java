@@ -19,7 +19,7 @@ import java.util.List;
 public class PostFeedController {
 
     private final PostService postService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     @PostMapping("/feed/friends")
     List<Post> getFriendsFeed(@RequestBody String params) {
