@@ -1,6 +1,7 @@
 package com.practice.catsgram.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class User {
     private String email;
@@ -35,5 +36,17 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(email);
     }
 }
